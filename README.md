@@ -1,66 +1,179 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+﻿# Gym Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 11 application for managing a gym network with role-based access and gym subscription plans.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project is a multi-role gym management system built on Laravel 11. It supports three user roles:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- `main_admin`: manages gyms, global plans, gym subscriptions, and users.
+- `gym_admin`: manages gym members, staff, sports, equipment, expenses, memberships, payments, attendance, billing, and gym settings.
+- `staff`: manages members, payments, equipment, attendance, and personal profile settings.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Key Features
 
-## Learning Laravel
+- Authentication and role-based authorization
+- Admin dashboard for system overview and gym management
+- Gym creation and management
+- Membership plans and gym plan subscriptions
+- Member registration, attendance tracking, and payment recording
+- Equipment, expense, and sport management
+- User profile and security settings
+- Contact form submission via public site
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Framework
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Laravel 11
+- PHP 8.2+
+- Vite for frontend asset compilation
+- Bootstrap 5
+- Composer dependency management
 
-## Laravel Sponsors
+### Directory structure
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- `app/Models/`: Eloquent models for the domain
+- `app/Http/Controllers/`: HTTP controllers separated by role
+  - `MainAdmin/`
+  - `GymAdmin/`
+  - `Staff/`
+  - `Auth/`
+- `app/Http/Requests/`: form request validation classes
+- `app/Http/Middleware/`: custom middleware
+- `routes/web.php`: web routes and role-based route groups
+- `resources/views/`: Blade templates and dashboard views
+- `database/migrations/`: schema migrations
+- `database/seeders/`: initial seed data
+- `public/`: compiled assets and entry script
 
-### Premium Partners
+### Route and access design
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- `routes/web.php` defines three main route groups:
+  - `main_admin.*` for main administrator features
+  - `gym_admin.*` for gym administrator features
+  - `staff.*` for staff user features
+- `Auth::routes()` provides authentication routes
+- `CheckUserStatus` middleware confirms the user is active and authorized
+- `LoginController` handles login, role-based redirects, and failed login tracking
 
-## Contributing
+### Core models
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `User`: core application users with roles, status, profile image, and gym relation
+- `Gym`: gym entities with operational details and relations for members, equipment, expenses, sports, memberships, and plans
+- `Plan`: global plan definitions for gym subscription tiers
+- `GymPlan`: gym-specific plan subscriptions with duration, payment, and status fields
+- `Member`: gym members with attendance and payment history
+- `Payment`: member payments, linked to membership and sport
+- `Membership`: gym membership products
+- `Attendance`: check-in/check-out records for gym members
+- `Equipment`: gym equipment inventory
 
-## Code of Conduct
+### Role-based controllers
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `app/Http/Controllers/MainAdmin/`
+  - `DashboardController`
+  - `GymController`
+  - `PlanController`
+  - `GymPlanController`
+  - `UserController`
+  - `ProfileController`
+- `app/Http/Controllers/GymAdmin/`
+  - `DashboardController`
+  - `MemberController`
+  - `StaffController`
+  - `SportController`
+  - `EquipmentController`
+  - `ExpenseController`
+  - `MembershipController`
+  - `PaymentController`
+  - `AttendanceController`
+  - `BillingController`
+  - `SettingController`
+  - `ProfileController`
+- `app/Http/Controllers/Staff/`
+  - `DashboardController`
+  - `MemberController`
+  - `EquipmentController`
+  - `PaymentController`
+  - `AttendanceController`
+  - `ProfileController`
 
-## Security Vulnerabilities
+### Validation and requests
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Form validation is handled using request classes in `app/Http/Requests/`, including:
 
-## License
+- `GymRequest`
+- `MemberRequest`
+- `PaymentRequest`
+- `EquipmentRequest`
+- `ExpenseRequest`
+- `PlanRequest`
+- `GymPlanRequest`
+- `MembershipRequest`
+- `ProfileUpdateRequest`
+- `SettingsRequest`
+- `PasswordChangeRequest`
+- `ContactFormRequest`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+These classes encapsulate authorization and validation rules for each resource.
+
+## Database schema summary
+
+- `users`: stores app users and role assignments
+- `gyms`: stores gym records, location, phone, city, region, image, and status
+- `plans`: store global plan packages
+- `gym_plans`: link gyms to subscriptions with payment details and expiry
+- `members`: gym members and personal info
+- `payments`: member payment records
+- `attendance`: check-in/out history
+- `equipment`: gym equipment inventory
+- `expenses`: expense tracking
+- `memberships`: gym membership products
+- `contacts`: contact form submissions
+- `failed_logins`: failed login tracking
+- `user_memberships`: optional membership assignments
+
+## Seed data
+
+- `database/seeders/PlanSeeder.php` seeds `Basic`, `Standard`, and `Premium` plans.
+- `database/seeders/DatabaseSeeder.php` seeds a default `main_admin` user.
+
+Default admin credentials:
+
+- Email: `admin@mygym.com`
+- Password: `password123`
+
+## Installation and setup
+
+```bash
+cd /path/to/Gym-main
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+npm install
+npm run dev
+php artisan storage:link
+php artisan serve
+```
+
+Open the app at `http://127.0.0.1:8000`.
+
+## Frontend assets
+
+- `resources/css/` contains styles
+- `resources/js/` contains JavaScript entry points
+- `vite.config.js` configures Vite asset building
+- `public/assets/` holds compiled assets
+
+## Notes
+
+- The app uses `Storage::url()` for gym image URLs, so `php artisan storage:link` is required for uploaded images.
+- Auth redirect logic sends users to role-specific dashboards.
+- `CheckUserStatus` middleware blocks inactive users and invalid roles.
+
+## Project goals
+
+This repo is designed to support a gym management workflow spanning system administration, gym operations, member services, and staff-led daily tasks. The architecture follows Laravel conventions with modular controllers per user role and Eloquent models for a clean domain layer.
