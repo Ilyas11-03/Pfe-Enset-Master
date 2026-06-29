@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
@@ -12,6 +12,7 @@ class SettingController extends Controller
     public function index()
     {
         $gym = Auth::user()->gym;
+
         return view('GymAdmin.settings', compact('gym'));
     }
 
@@ -26,9 +27,9 @@ class SettingController extends Controller
             'address' => 'required|string|max:255',
             'phone' => [
                 'required',
-                'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/', 
-                'max:15'
-            ],            
+                'regex:/^(\+\d{1,3}[- ]?)?\d{10}$/',
+                'max:15',
+            ],
             'operating_hours' => 'nullable|string|max:255',
             'city' => 'required|string|max:255',
             'region' => 'required|string|max:255',

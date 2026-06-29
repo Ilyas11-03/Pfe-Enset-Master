@@ -1,41 +1,38 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckUserStatus;
-use App\Http\Middleware\ThrottleFailedLogins;
 use App\Http\Controllers\Auth\LoginController;
-
-// MainAdmin Controllers
-use App\Http\Controllers\MainAdmin\DashboardController as MainAdminDashboardController;
-use App\Http\Controllers\MainAdmin\GymController as MainAdminGymController;
-use App\Http\Controllers\MainAdmin\PlanController as MainAdminPlanController;
-use App\Http\Controllers\MainAdmin\GymPlanController as MainAdminGymPlanController;
-use App\Http\Controllers\MainAdmin\UserController as MainAdminUserController;
-use App\Http\Controllers\MainAdmin\ProfileController as MainAdminProfileController;
-
-// GymAdmin Controllers
-use App\Http\Controllers\GymAdmin\DashboardController as GymAdminDashboardController;
-use App\Http\Controllers\GymAdmin\MemberController as GymAdminMemberController;
-use App\Http\Controllers\GymAdmin\StaffController as GymAdminStaffController;
-use App\Http\Controllers\GymAdmin\SportController as GymAdminSportController;
-use App\Http\Controllers\GymAdmin\EquipmentController as GymAdminEquipmentController;
-use App\Http\Controllers\GymAdmin\ExpenseController as GymAdminExpenseController;
 use App\Http\Controllers\GymAdmin\AttendanceController as GymAdminAttendanceController;
+use App\Http\Controllers\GymAdmin\BillingController as GymAdminBillingController;
+use App\Http\Controllers\GymAdmin\DashboardController as GymAdminDashboardController;
+use App\Http\Controllers\GymAdmin\EquipmentController as GymAdminEquipmentController;
+// MainAdmin Controllers
+use App\Http\Controllers\GymAdmin\ExpenseController as GymAdminExpenseController;
+use App\Http\Controllers\GymAdmin\MemberController as GymAdminMemberController;
 use App\Http\Controllers\GymAdmin\MembershipController as GymAdminMembershipController;
 use App\Http\Controllers\GymAdmin\PaymentController as GymAdminPaymentController;
 use App\Http\Controllers\GymAdmin\ProfileController as GymAdminProfileController;
-use App\Http\Controllers\GymAdmin\BillingController as GymAdminBillingController;
 use App\Http\Controllers\GymAdmin\SettingController as GymAdminSettingController;
+// GymAdmin Controllers
+use App\Http\Controllers\GymAdmin\SportController as GymAdminSportController;
+use App\Http\Controllers\GymAdmin\StaffController as GymAdminStaffController;
 use App\Http\Controllers\HomeController;
-// Staff Controllers
-use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
-use App\Http\Controllers\Staff\MemberController as StaffMemberController;
-use App\Http\Controllers\Staff\EquipmentController as StaffEquipmentController;
+use App\Http\Controllers\MainAdmin\DashboardController as MainAdminDashboardController;
+use App\Http\Controllers\MainAdmin\GymController as MainAdminGymController;
+use App\Http\Controllers\MainAdmin\GymPlanController as MainAdminGymPlanController;
+use App\Http\Controllers\MainAdmin\PlanController as MainAdminPlanController;
+use App\Http\Controllers\MainAdmin\ProfileController as MainAdminProfileController;
+use App\Http\Controllers\MainAdmin\UserController as MainAdminUserController;
 use App\Http\Controllers\Staff\AttendanceController as StaffAttendanceController;
+use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
+use App\Http\Controllers\Staff\EquipmentController as StaffEquipmentController;
+use App\Http\Controllers\Staff\MemberController as StaffMemberController;
+// Staff Controllers
 use App\Http\Controllers\Staff\PaymentController as StaffPaymentController;
 use App\Http\Controllers\Staff\ProfileController as StaffProfileController;
-
+use App\Http\Middleware\CheckUserStatus;
+use App\Http\Middleware\ThrottleFailedLogins;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 // Authentication Routes
 Auth::routes();
@@ -128,7 +125,7 @@ Route::middleware('auth')->group(function () {
             // Security Routes
             Route::get('/security', [GymAdminProfileController::class, 'security'])->name('security');
             Route::post('/security/password', [GymAdminProfileController::class, 'updatePassword'])->name('security.updatePassword');
-            
+
             // Billing Routes
             Route::get('/billing', [GymAdminBillingController::class, 'index'])->name('billing');
             Route::get('/billing/show/{id}', [GymAdminBillingController::class, 'show'])->name('billing.show');
@@ -136,7 +133,7 @@ Route::middleware('auth')->group(function () {
             // Settings Routes
             Route::get('/settings', [GymAdminSettingController::class, 'index'])->name('settings');
             Route::post('/settings', [GymAdminSettingController::class, 'update'])->name('settings.update');
-            
+
         });
 
         // Staff Routes
@@ -144,13 +141,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
             // Members: view only
             Route::resource('members', StaffMemberController::class)->names('members')->only(['index', 'show']);
-            
+
             // Payments: create, view, edit (no delete)
             Route::resource('payments', StaffPaymentController::class)->names('payments')->except(['destroy']);
-            
+
             // Equipment: view only
             Route::resource('equipment', StaffEquipmentController::class)->names('equipment')->only(['index', 'show']);
-            
+
             // Attendance: view and mark attendance
             Route::get('attendance', [StaffAttendanceController::class, 'index'])->name('attendance.index');
             Route::post('attendance/check-in', [StaffAttendanceController::class, 'checkIn'])->name('attendance.checkin');
@@ -165,7 +162,7 @@ Route::middleware('auth')->group(function () {
             // Security Routes
             Route::get('/security', [StaffProfileController::class, 'security'])->name('security');
             Route::post('/security/password', [StaffProfileController::class, 'updatePassword'])->name('security.updatePassword');
-            
+
         });
     });
 });

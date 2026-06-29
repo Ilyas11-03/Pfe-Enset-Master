@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GymRequest extends FormRequest
@@ -29,7 +28,7 @@ class GymRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:50',
-                'regex:/^[a-zA-Z\s]+$/'
+                'regex:/^[a-zA-Z\s]+$/',
             ],
             'address' => 'required|string|max:255',
             'domain' => 'required|string|max:255',
@@ -39,7 +38,7 @@ class GymRequest extends FormRequest
             'operating_hours' => 'nullable|string|max:255',
             // 'plan_id' => 'required|exists:plans,id',
             // 'starts_at' => 'required|date',
-            // 'expires_at' => 'nullable|date', 
+            // 'expires_at' => 'nullable|date',
             // 'duration' => 'required|numeric|min:1',
             'status' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:800',

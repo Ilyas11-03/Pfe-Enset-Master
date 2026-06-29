@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use App\Models\Membership;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MembershipRequest;
+use App\Models\Membership;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use App\Http\Requests\MembershipRequest;
 
 class MembershipController extends Controller
 {
@@ -63,6 +62,7 @@ class MembershipController extends Controller
         $id = Crypt::decrypt($id);
 
         $membership = Membership::findOrFail($id);
+
         return view('GymAdmin.memberships.show', compact('membership'));
     }
 
@@ -74,6 +74,7 @@ class MembershipController extends Controller
         $id = Crypt::decrypt($id);
 
         $membership = Membership::findOrFail($id);
+
         return view('GymAdmin.memberships.edit', compact('membership'));
     }
 
@@ -108,6 +109,7 @@ class MembershipController extends Controller
 
         $membership = Membership::findOrFail($id);
         $membership->delete();
+
         return redirect()->route('gym_admin.memberships.index')->with('success', 'Membership deleted successfully');
     }
 }

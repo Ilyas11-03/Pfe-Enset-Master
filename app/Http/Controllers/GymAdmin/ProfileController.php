@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PasswordChangeRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Requests\PasswordChangeRequest;
 
 class ProfileController extends Controller
 {
@@ -53,7 +53,7 @@ class ProfileController extends Controller
     {
         $user = User::find(Auth::id());
 
-        if (!Hash::check($request->currentPassword, $user->password)) {
+        if (! Hash::check($request->currentPassword, $user->password)) {
             return redirect()->back()->with('error', 'Current password is incorrect.');
         }
 
@@ -69,6 +69,7 @@ class ProfileController extends Controller
     {
         $user = User::find(Auth::id());
         $user->update(['status' => 'inactive']);
+
         return redirect()->route('gym_admin.login')->with('success', 'Your account has been deactivated.');
     }
 }

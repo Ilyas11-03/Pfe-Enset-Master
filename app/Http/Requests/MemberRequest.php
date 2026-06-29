@@ -36,9 +36,9 @@ class MemberRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:50',
-                'regex:/^[a-zA-Z\s]+$/'
+                'regex:/^[a-zA-Z\s]+$/',
             ],
-            'email' => 'required|string|email|max:255|unique:members,email,' . $id,
+            'email' => 'required|string|email|max:255|unique:members,email,'.$id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'gender' => 'nullable|in:male,female,other',

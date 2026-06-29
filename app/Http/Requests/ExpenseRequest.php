@@ -20,7 +20,7 @@ class ExpenseRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:50',
-                'regex:/^[a-zA-Z\s]+$/'
+                'regex:/^[a-zA-Z\s]+$/',
             ],
             'description' => 'nullable|string|max:255',
             'amount' => 'required|numeric',

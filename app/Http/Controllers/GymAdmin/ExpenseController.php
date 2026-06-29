@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use App\Models\Gym;
-use App\Models\Expense;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ExpenseRequest;
+use App\Models\Expense;
+use App\Models\Gym;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,7 +31,7 @@ class ExpenseController extends Controller
 
         // Search by name
         if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         // Paginate the results
@@ -41,11 +41,8 @@ class ExpenseController extends Controller
         $totalExpenses = $query->count();
         $totalAmount = $query->sum('amount');
 
-
         return view('GymAdmin.expenses.index', compact('expenses', 'totalExpenses', 'totalAmount'));
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -54,6 +51,7 @@ class ExpenseController extends Controller
     {
         $gymId = Auth::user()->gym_id;
         $gyms = Gym::where('id', $gymId)->get();
+
         return view('GymAdmin.expenses.create', compact('gyms'));
     }
 
@@ -93,6 +91,7 @@ class ExpenseController extends Controller
 
         $gymId = Auth::user()->gym_id;
         $expense = Expense::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
+
         return view('GymAdmin.expenses.show', compact('expense'));
     }
 
@@ -106,6 +105,7 @@ class ExpenseController extends Controller
         $gymId = Auth::user()->gym_id;
         $expense = Expense::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
         $gyms = Gym::where('id', $gymId)->get();
+
         return view('GymAdmin.expenses.edit', compact('expense', 'gyms'));
     }
 
@@ -156,6 +156,7 @@ class ExpenseController extends Controller
             Storage::disk('public')->delete($expense->receipt);
         }
         $expense->delete();
+
         return redirect()->route('gym_admin.expenses.index')->with('success', 'Expense deleted successfully');
     }
 }

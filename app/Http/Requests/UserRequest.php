@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -19,7 +20,7 @@ class UserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -33,11 +34,11 @@ class UserRequest extends FormRequest
         } else {
             $id = $this->route('id');
         }
-        
+
         $rules = [
             'gym_id' => [
                 'nullable',
-                'exists:gyms,id'
+                'exists:gyms,id',
             ],
             'name' => [
                 'required',
@@ -49,7 +50,7 @@ class UserRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore($id)
+                Rule::unique('users', 'email')->ignore($id),
             ],
             'password' => 'nullable|string|min:8|max:255|regex:/^(?=.*[a-z])(?=.*[\d\s\W]).+$/',
             'phone' => 'nullable|string|max:255',

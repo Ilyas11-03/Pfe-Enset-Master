@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Staff;
 
-use Carbon\Carbon;
-use App\Models\Member;
-use App\Models\Attendance;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
+use App\Models\Member;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
@@ -19,7 +19,7 @@ class AttendanceController extends Controller
 
         if ($request->has('member_name')) {
             $query->whereHas('member', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->member_name . '%');
+                $q->where('name', 'like', '%'.$request->member_name.'%');
             });
         }
 
@@ -46,7 +46,6 @@ class AttendanceController extends Controller
         ));
     }
 
-
     public function checkin(Request $request)
     {
         // Decrypt the member_id before validation
@@ -71,7 +70,6 @@ class AttendanceController extends Controller
         }
         $gym_id = Auth::user()->gym_id;
 
-
         Attendance::create([
             'member_id' => $member->id,
             'gym_id' => $gym_id,
@@ -82,7 +80,6 @@ class AttendanceController extends Controller
 
         return redirect()->back()->with('success', 'Member checked in successfully.');
     }
-
 
     public function checkOut(Request $request, $id)
     {
@@ -106,12 +103,11 @@ class AttendanceController extends Controller
         return redirect()->back()->with('error', 'Member is not currently checked in.');
     }
 
-
     public function autocomplete(Request $request)
     {
         $search = $request->get('term');
 
-        $members = Member::where('name', 'like', '%' . $search . '%')->get();
+        $members = Member::where('name', 'like', '%'.$search.'%')->get();
 
         $results = [];
 
@@ -120,7 +116,7 @@ class AttendanceController extends Controller
                 'id' => $member->id,
                 'label' => $member->name,
                 'value' => $member->name,
-                'image' => $member->profile_image // Assuming you have a profile_image field
+                'image' => $member->profile_image, // Assuming you have a profile_image field
             ];
         }
 

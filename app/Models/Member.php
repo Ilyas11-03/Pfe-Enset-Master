@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
@@ -43,18 +43,22 @@ class Member extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
     }
+
     public function currentPlan()
     {
         return $this->hasOne(Payment::class)->active()->latestOfMany();
     }
+
     public function latestPlan()
     {
         return $this->hasOne(Payment::class)->latestOfMany();
     }
+
     public function isExpired()
     {
         $currentPlan = $this->currentPlan;
@@ -65,8 +69,14 @@ class Member extends Model
 
         return true; // No active plan means the membership is expired
     }
+
     public function getIsExpiredAttribute()
     {
         return $this->isExpired();
+    }
+
+    public function getCurrentPlanAttribute()
+    {
+        return $this->hasOne(GymPlan::class)->latest()->first();
     }
 }

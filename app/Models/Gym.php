@@ -40,11 +40,11 @@ class Gym extends Model
     {
         return $this->hasMany(Member::class);
     }
+
     public function sports()
     {
         return $this->hasMany(Sport::class);
     }
-
 
     public function equipment()
     {
@@ -70,6 +70,7 @@ class Gym extends Model
     {
         return $this->hasOne(GymPlan::class)->active()->latestOfMany();
     }
+
     public function latestPlan()
     {
         return $this->hasOne(GymPlan::class)->latestOfMany();

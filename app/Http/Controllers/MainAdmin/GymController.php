@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\MainAdmin;
 
-use Carbon\Carbon;
-use App\Models\Gym;
-use App\Http\Requests\GymRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GymRequest;
+use App\Models\Gym;
+use Carbon\Carbon;
 
 class GymController extends Controller
 {
@@ -26,7 +26,6 @@ class GymController extends Controller
 
         return view('MainAdmin.gyms.index', compact('gyms', 'totalGyms', 'activeGyms', 'pendingGyms', 'expiredGyms'));
     }
-
 
     public function create()
     {
@@ -83,7 +82,7 @@ class GymController extends Controller
             $endDate = Carbon::parse($gym->latestPlan->end_date);
 
             if ($now->greaterThan($endDate)) {
-                $expiredDays = abs((int)$now->diffInDays($endDate, false)); // This will be positive
+                $expiredDays = abs((int) $now->diffInDays($endDate, false)); // This will be positive
             }
 
             $dueDate = Carbon::parse($gym->latestPlan->due_date)->format('F j, Y');
@@ -94,7 +93,7 @@ class GymController extends Controller
         $totalStaff = $gym->users->where('role', 'staff')->count();
         $totalCoaches = $gym->users->where('role', 'coach')->count();
         $totalPlans = $gym->gymPlans->count();
-        
+
         return view('MainAdmin.gyms.show', compact(
             'gym',
             'daysRemaining',
@@ -108,13 +107,10 @@ class GymController extends Controller
         ));
     }
 
-
-
-
-
     public function edit(string $id)
     {
         $gym = Gym::findOrFail($id);
+
         return view('MainAdmin.gyms.edit', compact('gym'));
     }
 
@@ -152,6 +148,7 @@ class GymController extends Controller
     {
         $gym = Gym::findOrFail($id);
         $gym->delete();
+
         return redirect()->route('main_admin.gyms.index')->with('success', 'Gym deleted successfully');
     }
 }

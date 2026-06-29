@@ -25,7 +25,6 @@ class CreateSportsTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *

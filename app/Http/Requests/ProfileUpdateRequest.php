@@ -25,9 +25,9 @@ class ProfileUpdateRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:50',
-                'regex:/^[a-zA-Z\s]+$/'
-            ],            
-            'email' => 'required|string|email|max:255|unique:users,email,' . $this->user()->id,
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+            'email' => 'required|string|email|max:255|unique:users,email,'.$this->user()->id,
             'phone' => 'nullable|string|max:15',
             'address' => 'nullable|string|max:255',
             'profile_image' => 'nullable|image|max:1024',

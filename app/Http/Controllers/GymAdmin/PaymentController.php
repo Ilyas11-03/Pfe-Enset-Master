@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use Carbon\Carbon;
-use App\Models\Sport;
+use App\Http\Requests\PaymentRequest;
 use App\Models\Member;
-use App\Models\Payment;
 use App\Models\Membership;
+use App\Models\Payment;
+use App\Models\Sport;
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\PaymentRequest;
 use Illuminate\Support\Facades\Crypt;
 
 class PaymentController extends Controller
@@ -24,7 +24,7 @@ class PaymentController extends Controller
             ->with(['member', 'membership'])
             ->orderBy('created_at', 'desc')
             ->get();
-            
+
         $totalPayments = $payments->count();
         $expiredPayments = $payments->filter(function ($payment) {
             return $payment->end_date < now();
@@ -35,7 +35,6 @@ class PaymentController extends Controller
 
         return view('GymAdmin.payments.index', compact('payments', 'totalPayments', 'expiredPayments', 'paidPayments', 'partialPaidPayments', 'pendingPayments'));
     }
-
 
     public function show($id)
     {
@@ -49,7 +48,6 @@ class PaymentController extends Controller
         return view('GymAdmin.payments.show', compact('payment', 'relatedPayments'));
     }
 
-
     public function create()
     {
         $gymId = Auth::user()->gym_id;
@@ -57,7 +55,7 @@ class PaymentController extends Controller
         $members = Member::where('gym_id', $gymId)->get();
         $memberships = Membership::where('gym_id', $gymId)->get();
         $sports = Sport::where('gym_id', $gymId)->get(); // Get all sports for the dropdown
-        
+
         return view('GymAdmin.payments.create', compact('members', 'memberships', 'sports'));
     }
 
@@ -98,13 +96,13 @@ class PaymentController extends Controller
         $id = Crypt::decrypt($id);
 
         $payment = Payment::findOrFail($id);
-        
+
         $gymId = Auth::user()->gym_id;
 
         $members = Member::where('gym_id', $gymId)->get();
         $memberships = Membership::where('gym_id', $gymId)->get();
         $sports = Sport::where('gym_id', $gymId)->get(); // Get all sports for the dropdown
-        
+
         return view('GymAdmin.payments.edit', compact('payment', 'members', 'memberships', 'sports'));
     }
 
@@ -149,7 +147,6 @@ class PaymentController extends Controller
         $payment = Payment::findOrFail($id);
         $payment->delete();
 
-        
         return redirect()->route('gym_admin.payments.index')->with('success', 'Payment deleted successfully.');
     }
 }

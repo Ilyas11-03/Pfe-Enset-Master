@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use App\Models\Gym;
-use App\Models\User;
-use App\Models\Member;
-use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Models\Gym;
+use App\Models\Member;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class StaffController extends Controller
 {
@@ -27,7 +27,6 @@ class StaffController extends Controller
         $totalStaff = User::where('role', 'staff')->where('gym_id', $gymId)->count();
         $activeStaff = User::where('role', 'staff')->where('gym_id', $gymId)->where('status', 'Active')->count();
         $inactiveStaff = User::where('role', 'staff')->where('gym_id', $gymId)->where('status', 'Inactive')->count();
-
 
         // Fetch all staff members for the specific gym
         $staffMembers = User::where('role', 'staff')
@@ -52,6 +51,7 @@ class StaffController extends Controller
     {
         $gymId = Auth::user()->gym_id;
         $gyms = Gym::where('id', $gymId)->get();
+
         return view('GymAdmin.staff.create', compact('gyms'));
     }
 
@@ -119,7 +119,6 @@ class StaffController extends Controller
         return view('GymAdmin.staff.show', compact('staffMember', 'membersManaged', 'activeMembersManaged', 'inactiveMembersManaged', 'expiredMembershipsManaged'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -130,6 +129,7 @@ class StaffController extends Controller
         $gymId = Auth::user()->gym_id;
         $staffMember = User::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
         $gyms = Gym::where('id', $gymId)->get();
+
         return view('GymAdmin.staff.edit', compact('staffMember', 'gyms'));
     }
 
@@ -139,7 +139,6 @@ class StaffController extends Controller
     public function update(UserRequest $request, $id)
     {
         $id = Crypt::decrypt($id);
-
 
         $data = $request->validated();
         $status = $request->has('status') ? 'active' : 'inactive';
@@ -162,7 +161,7 @@ class StaffController extends Controller
             $updateData['profile_image'] = $imagePath;
         }
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $updateData['password'] = Hash::make($data['password']);
         }
 
@@ -181,18 +180,19 @@ class StaffController extends Controller
 
         $gymId = Auth::user()->gym_id;
         $staffMember = User::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
-        
+
         // Clear foreign key references before deleting
         $tables = ['members', 'memberships', 'user_memberships', 'payments', 'attendance', 'equipment', 'sports', 'expenses'];
-        
+
         foreach ($tables as $table) {
             if (Schema::hasTable($table)) {
                 DB::table($table)->where('created_by', $id)->update(['created_by' => null]);
                 DB::table($table)->where('updated_by', $id)->update(['updated_by' => null]);
             }
         }
-        
+
         $staffMember->delete();
+
         return redirect()->route('gym_admin.staff.index')->with('success', 'Staff member deleted successfully');
     }
 }

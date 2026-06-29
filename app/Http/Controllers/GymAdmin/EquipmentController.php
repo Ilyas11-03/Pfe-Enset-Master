@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use App\Models\Gym;
-use App\Models\Equipment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EquipmentRequest;
+use App\Models\Equipment;
+use App\Models\Gym;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use App\Http\Requests\EquipmentRequest;
 
 class EquipmentController extends Controller
 {
@@ -33,7 +33,6 @@ class EquipmentController extends Controller
         return view('GymAdmin.equipments.index', compact('equipment', 'totalEquipment', 'goodCondition', 'maintenanceNeeded', 'totalQuantity', 'totalValue'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -41,6 +40,7 @@ class EquipmentController extends Controller
     {
         $gymId = Auth::user()->gym_id;
         $gyms = Gym::where('id', $gymId)->get();
+
         return view('GymAdmin.equipments.create', compact('gyms'));
     }
 
@@ -83,6 +83,7 @@ class EquipmentController extends Controller
 
         $gymId = Auth::user()->gym_id;
         $equipment = Equipment::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
+
         return view('GymAdmin.equipments.show', compact('equipment'));
     }
 
@@ -96,6 +97,7 @@ class EquipmentController extends Controller
         $gymId = Auth::user()->gym_id;
         $equipment = Equipment::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
         $gyms = Gym::where('id', $gymId)->get();
+
         return view('GymAdmin.equipments.edit', compact('equipment', 'gyms'));
     }
 
@@ -143,6 +145,7 @@ class EquipmentController extends Controller
         $gymId = Auth::user()->gym_id;
         $equipment = Equipment::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
         $equipment->delete();
+
         return redirect()->route('gym_admin.equipment.index')->with('success', 'Equipment deleted successfully');
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use App\Models\Sport;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SportRequest;
+use App\Models\Sport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use App\Http\Requests\SportRequest;
 
 class SportController extends Controller
 {
@@ -43,7 +42,6 @@ class SportController extends Controller
         $data = $request->validated();
         $status = ($request->has('status')) ? 'active' : 'inactive';
 
-
         Sport::create([
             'gym_id' => auth()->user()->gym_id,
             'name' => $data['name'],
@@ -64,6 +62,7 @@ class SportController extends Controller
         $id = Crypt::decrypt($id);
 
         $sport = Sport::findOrFail($id);
+
         return view('GymAdmin.sports.show', compact('sport'));
     }
 
@@ -75,6 +74,7 @@ class SportController extends Controller
         $id = Crypt::decrypt($id);
 
         $sport = Sport::findOrFail($id);
+
         return view('GymAdmin.sports.edit', compact('sport'));
     }
 
@@ -87,7 +87,6 @@ class SportController extends Controller
 
         $data = $request->validated();
         $status = ($request->has('status')) ? 'active' : 'inactive';
-
 
         $sport = Sport::findOrFail($id);
         $sport->update([
@@ -109,6 +108,7 @@ class SportController extends Controller
 
         $sport = Sport::findOrFail($id);
         $sport->delete();
+
         return redirect()->route('gym_admin.sports.index')->with('success', 'Sport deleted successfully');
     }
 }

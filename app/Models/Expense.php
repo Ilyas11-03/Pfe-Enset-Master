@@ -16,7 +16,7 @@ class Expense extends Model
         'amount',
         'expense_date',
         'category',
-        'receipt'
+        'receipt',
     ];
 
     public function gym()

@@ -11,15 +11,11 @@ class CheckUserStatus
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the user is authenticated
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect('login');
         }
 
@@ -27,13 +23,15 @@ class CheckUserStatus
         $user = Auth::user();
         if ($user->status !== 'active') {
             Auth::logout();
+
             // return redirect('login')->withErrors(['']);
             return redirect()->route('login')->with('error', 'Your account is deactivated. Please contact support.');
         }
 
         // Check if the user has the role of main_admin or gym_admin or staff
-        if (Auth::user()->role !== 'main_admin' && Auth::user()->role !== 'gym_admin' && Auth::user()->role !== 'staff'){
+        if (Auth::user()->role !== 'main_admin' && Auth::user()->role !== 'gym_admin' && Auth::user()->role !== 'staff') {
             Auth::logout();
+
             return redirect()->route('login')->with('error', 'You do not have the required permissions to access this resource.');
         }
 

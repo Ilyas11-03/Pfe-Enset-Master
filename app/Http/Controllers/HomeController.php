@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactFormRequest;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\ContactFormRequest;
 
 class HomeController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('home');
     }
 
@@ -26,9 +27,9 @@ class HomeController extends Controller
         ]);
 
         // Send the email
-        Mail::send('emails.contact', $data, function($message) use ($data) {
+        Mail::send('emails.contact', $data, function ($message) {
             $message->to('contact@mygym.ma')
-                    ->subject('Contact Form Submission');
+                ->subject('Contact Form Submission');
         });
 
         return back()->with('success', 'Thank you for your message. We will get back to you shortly.');

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use App\Models\Payment;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -38,7 +37,7 @@ class DashboardController extends Controller
                 'month' => date('M', mktime(0, 0, 0, $month, 1)),
                 'earnings' => $totalEarnings,
                 'expenses' => $totalExpenses,
-                'profit' => $profit
+                'profit' => $profit,
             ];
         }
 
@@ -92,7 +91,6 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(7)
             ->get();
-
 
         // Pass data to view
         return view('GymAdmin.dashboard', compact(

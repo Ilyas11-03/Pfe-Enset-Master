@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->enum('role', ['main_admin','gym_admin', 'staff', 'coach']);
+            $table->enum('role', ['main_admin', 'gym_admin', 'staff', 'coach']);
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('profile_image')->nullable();
             $table->timestamps();

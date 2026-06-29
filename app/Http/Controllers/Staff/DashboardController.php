@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\Models\Payment;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 'month' => date('M', mktime(0, 0, 0, $month, 1)),
                 'earnings' => $totalEarnings,
                 'expenses' => $totalExpenses,
-                'profit' => $profit
+                'profit' => $profit,
             ];
         }
 

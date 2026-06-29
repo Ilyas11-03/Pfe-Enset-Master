@@ -10,7 +10,7 @@ class FailedLoginController extends Controller
 {
     public function recordFailedAttempt(Request $request)
     {
-        $userId = Auth::id();  
+        $userId = Auth::id();
         $ipAddress = $request->ip();
 
         $failedLogin = FailedLogin::firstOrCreate(

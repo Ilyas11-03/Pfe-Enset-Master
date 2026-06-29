@@ -3,12 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Gym;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -33,16 +31,20 @@ class User extends Authenticatable
         'updated_by',
         'last_login',
     ];
-    
+
     public function hasRole($roles): bool
-{
-    if (!auth()->check()) return false;
-    $role = $this->role ?? null;
-    if (is_array($roles)) {
-        return in_array($role, $roles);
+    {
+        if (! auth()->check()) {
+            return false;
+        }
+        $role = $this->role ?? null;
+        if (is_array($roles)) {
+            return in_array($role, $roles);
+        }
+
+        return $role === $roles;
     }
-    return $role === $roles;
-}
+
     public function gym()
     {
         return $this->belongsTo(Gym::class);
@@ -86,6 +88,4 @@ class User extends Authenticatable
             'last_login' => 'datetime',
         ];
     }
-
-    
 }

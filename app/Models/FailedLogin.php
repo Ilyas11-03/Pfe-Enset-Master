@@ -16,8 +16,8 @@ class FailedLogin extends Model
         'last_attempt_at',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-
 }

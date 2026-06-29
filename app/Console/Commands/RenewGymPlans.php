@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\GymPlan;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class RenewGymPlans extends Command
 {
     protected $signature = 'gym:renew-plans';
+
     protected $description = 'Renew gym plans with auto renew enabled';
 
     public function __construct()
@@ -32,15 +33,24 @@ class RenewGymPlans extends Command
 
     protected function renewPlan(GymPlan $plan)
     {
-        $newStartDate = $plan->end_date->addDay();
-        $duration = $plan->duration; // Use the same duration
-
+        // La nouvelle date de début = lendemain de l'ancienne date de fin
+        $newStartDate = Carbon::parse($plan->end_date)->addDay();
+        
+        // Si le plan est expiré depuis longtemps, on commence maintenant
+        if ($newStartDate->isPast()) {
+            $newStartDate = Carbon::now();
+        }
+        
+        $duration = $plan->duration;
+        
+        // La nouvelle date de fin = nouvelle date de début + durée
         $newEndDate = $newStartDate->clone()->addMonths($duration);
+        
         $plan->update([
             'start_date' => $newStartDate,
             'end_date' => $newEndDate,
-            'status' => 'active', // Update status if needed
-            'due_date' => $newStartDate->clone()->addDays(7), // Adjust due date
+            'status' => 'active',
+            'due_date' => $newStartDate->clone()->addDays(7),
         ]);
     }
 }

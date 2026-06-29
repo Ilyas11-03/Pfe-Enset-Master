@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class GymPlan extends Model
 {
@@ -24,7 +24,7 @@ class GymPlan extends Model
         'payment_method',
         'due_date',
         'status',
-        'auto_renew', 
+        'auto_renew',
         'notes',
     ];
 
@@ -42,6 +42,7 @@ class GymPlan extends Model
     {
         return $this->end_date < Carbon::now() ? 'Expired' : 'Active';
     }
+
     public function scopeActive($query)
     {
         return $query->where('end_date', '>=', Carbon::now());

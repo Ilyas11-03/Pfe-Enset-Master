@@ -20,7 +20,7 @@ class CreateGymPlansTable extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->integer('duration');
-            $table->enum('status', ['active', 'inactive','expired'])->default('active');
+            $table->enum('status', ['active', 'inactive', 'expired'])->default('active');
             $table->timestamps();
         });
     }

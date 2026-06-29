@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use Carbon\Carbon;
-use App\Models\Plan;
-use App\Models\GymPlan;
 use App\Http\Controllers\Controller;
+use App\Models\GymPlan;
+use App\Models\Plan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class BillingController extends Controller
@@ -64,8 +64,6 @@ class BillingController extends Controller
             'activeGyms'
         ));
     }
-
-
 
     public function show($id)
     {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\MainAdmin;
 
-use App\Models\Plan;
-use App\Http\Requests\PlanRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PlanRequest;
+use App\Models\Plan;
 
 class PlanController extends Controller
 {
@@ -55,6 +55,7 @@ class PlanController extends Controller
     public function show(string $id)
     {
         $plan = Plan::findOrFail($id);
+
         return view('MainAdmin.plans.show', compact('plan'));
     }
 
@@ -64,6 +65,7 @@ class PlanController extends Controller
     public function edit(string $id)
     {
         $plan = Plan::findOrFail($id);
+
         return view('MainAdmin.plans.edit', compact('plan'));
     }
 
@@ -94,6 +96,7 @@ class PlanController extends Controller
     {
         $plan = Plan::findOrFail($id);
         $plan->delete();
+
         return redirect()->route('main_admin.plans.index')->with('success', 'Plan deleted successfully');
     }
 }

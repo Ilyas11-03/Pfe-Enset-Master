@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\MainAdmin;
 
-use Carbon\Carbon;
-use App\Models\Gym;
-use App\Models\Plan;
-use App\Models\GymPlan;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\GymPlanRequest;
+use App\Models\Gym;
+use App\Models\GymPlan;
+use App\Models\Plan;
+use Carbon\Carbon;
 
 class GymPlanController extends Controller
 {
@@ -26,6 +24,7 @@ class GymPlanController extends Controller
     public function show($id)
     {
         $gymPlan = GymPlan::with(['gym', 'plan'])->findOrFail($id);
+
         return view('MainAdmin.gym-plans.show', compact('gymPlan'));
     }
 
@@ -33,6 +32,7 @@ class GymPlanController extends Controller
     {
         $gyms = Gym::all();
         $plans = Plan::all();
+
         return view('MainAdmin.gym-plans.create', compact('gyms', 'plans'));
     }
 
@@ -83,6 +83,7 @@ class GymPlanController extends Controller
         $gymPlan = GymPlan::findOrFail($id);
         $gyms = Gym::all();
         $plans = Plan::all();
+
         return view('MainAdmin.gym-plans.edit', compact('gymPlan', 'gyms', 'plans'));
     }
 
@@ -131,6 +132,7 @@ class GymPlanController extends Controller
     {
         $gymPlan = GymPlan::findOrFail($id);
         $gymPlan->delete();
+
         return redirect()->route('main_admin.gym-plans.index')->with('success', 'Gym plan deleted successfully.');
     }
 }

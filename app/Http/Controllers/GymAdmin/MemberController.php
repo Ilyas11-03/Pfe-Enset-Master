@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\GymAdmin;
 
-use Carbon\Carbon;
-use App\Models\Gym;
-use App\Models\Member;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MemberRequest;
+use App\Models\Gym;
+use App\Models\Member;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
@@ -31,7 +30,6 @@ class MemberController extends Controller
         $activeMembers = Member::where('gym_id', $gymId)->where('status', 'active')->count();
         $inactiveMembers = Member::where('gym_id', $gymId)->where('status', 'inactive')->count();
         $expiredMembers = Member::where('gym_id', $gymId)->get()->filter->isExpired->count();
-
 
         // Fetch previous period data
         $previousTotalMembers = Member::where('gym_id', $gymId)
@@ -101,7 +99,6 @@ class MemberController extends Controller
             }
         }
 
-
         $profileImagePath = null;
         if ($request->hasFile('profile_image')) {
             $profileImagePath = $request->file('profile_image')->store('members', 'public');
@@ -156,7 +153,6 @@ class MemberController extends Controller
         return view('GymAdmin.members.show', compact('member', 'currentPlan', 'latestPlan', 'subscriptionEndDate', 'remainingDays', 'percentageCompleted', 'daysRemaining', 'payments', 'totalDays'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -165,6 +161,7 @@ class MemberController extends Controller
         $id = Crypt::decrypt($id);
 
         $member = Member::findOrFail($id);
+
         return view('GymAdmin.members.edit', compact('member'));
     }
 
@@ -207,6 +204,7 @@ class MemberController extends Controller
 
         $member = Member::findOrFail($id);
         $member->delete();
+
         return redirect()->route('gym_admin.members.index')->with('success', 'Member deleted successfully');
     }
 }

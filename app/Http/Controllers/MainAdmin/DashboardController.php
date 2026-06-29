@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\MainAdmin;
 
 use App\Models\Gym;
-use App\Models\User;
 use App\Models\GymPlan;
+use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller
@@ -22,13 +23,12 @@ class DashboardController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
         $currentYear = now()->year;
         $currentMonth = now()->month;
-
 
         // Initialize an array to hold the monthly data
         $monthlyData = [];
