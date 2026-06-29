@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Models\Attendance;
-use App\Models\Member;
 use App\Models\Gym;
+use App\Models\Member;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -34,7 +34,7 @@ class AttendanceTest extends TestCase
     {
         $gym = Gym::factory()->create();
         $member = Member::factory()->create(['gym_id' => $gym->id]);
-        
+
         $attendance = Attendance::factory()->create([
             'member_id' => $member->id,
             'gym_id' => $gym->id,
@@ -47,7 +47,7 @@ class AttendanceTest extends TestCase
     {
         $gym = Gym::factory()->create();
         $member = Member::factory()->create(['gym_id' => $gym->id]);
-        
+
         $attendance = Attendance::factory()->create([
             'member_id' => $member->id,
             'gym_id' => $gym->id,

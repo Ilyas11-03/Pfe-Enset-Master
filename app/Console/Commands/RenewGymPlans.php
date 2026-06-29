@@ -35,17 +35,17 @@ class RenewGymPlans extends Command
     {
         // La nouvelle date de début = lendemain de l'ancienne date de fin
         $newStartDate = Carbon::parse($plan->end_date)->addDay();
-        
+
         // Si le plan est expiré depuis longtemps, on commence maintenant
         if ($newStartDate->isPast()) {
             $newStartDate = Carbon::now();
         }
-        
+
         $duration = $plan->duration;
-        
+
         // La nouvelle date de fin = nouvelle date de début + durée
         $newEndDate = $newStartDate->clone()->addMonths($duration);
-        
+
         $plan->update([
             'start_date' => $newStartDate,
             'end_date' => $newEndDate,
