@@ -66,6 +66,7 @@ class PaymentController extends Controller
         $data = $request->validated();
         $startDate = Carbon::parse($data['start_date']);
         $endDate = Carbon::parse($data['end_date']);
+        $paymentDate = isset($data['payment_date']) ? Carbon::parse($data['payment_date']) : Carbon::now();
         $totalAmount = (int) $data['total_amount'];
         $amountPaid = (int) $data['amount_paid'];
         $dueAmount = $totalAmount - $amountPaid;
@@ -75,7 +76,10 @@ class PaymentController extends Controller
             'membership_id' => $data['membership_id'],
             'sport_id' => $data['sport_id'], // Include sport_id
             'start_date' => $startDate,
+            'payment_date' => $paymentDate,
             'end_date' => $endDate,
+            'amount' => $totalAmount,
+            'payment_method' => $data['payment_method'] ?? 'Cash',
             'total_amount' => $totalAmount,
             'amount_paid' => $amountPaid,
             'due_amount' => $dueAmount,
@@ -122,7 +126,10 @@ class PaymentController extends Controller
             'membership_id' => $data['membership_id'],
             'sport_id' => $data['sport_id'], // Update sport_id
             'start_date' => $startDate,
+            'payment_date' => isset($data['payment_date']) ? Carbon::parse($data['payment_date']) : $payment->payment_date,
             'end_date' => $endDate,
+            'amount' => $totalAmount,
+            'payment_method' => $data['payment_method'] ?? $payment->payment_method,
             'total_amount' => $totalAmount,
             'amount_paid' => $amountPaid,
             'due_amount' => $dueAmount,

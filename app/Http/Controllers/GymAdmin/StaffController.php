@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class StaffController extends Controller
 {
@@ -179,6 +181,17 @@ class StaffController extends Controller
 
         $gymId = Auth::user()->gym_id;
         $staffMember = User::where('id', $id)->where('gym_id', $gymId)->firstOrFail();
+        
+        // Clear foreign key references before deleting
+        $tables = ['members', 'memberships', 'user_memberships', 'payments', 'attendance', 'equipment', 'sports', 'expenses'];
+        
+        foreach ($tables as $table) {
+            if (Schema::hasTable($table)) {
+                DB::table($table)->where('created_by', $id)->update(['created_by' => null]);
+                DB::table($table)->where('updated_by', $id)->update(['updated_by' => null]);
+            }
+        }
+        
         $staffMember->delete();
         return redirect()->route('gym_admin.staff.index')->with('success', 'Staff member deleted successfully');
     }

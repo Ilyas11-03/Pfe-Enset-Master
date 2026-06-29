@@ -142,9 +142,16 @@ Route::middleware('auth')->group(function () {
         // Staff Routes
         Route::prefix('staff')->middleware(['auth', 'role:staff'])->name('staff.')->group(function () {
             Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
-            Route::resource('members', StaffMemberController::class)->names('members');
-            Route::resource('payments', StaffPaymentController::class)->names('payments');
-            Route::resource('equipment', StaffEquipmentController::class)->names('equipment');
+            // Members: view only
+            Route::resource('members', StaffMemberController::class)->names('members')->only(['index', 'show']);
+            
+            // Payments: create, view, edit (no delete)
+            Route::resource('payments', StaffPaymentController::class)->names('payments')->except(['destroy']);
+            
+            // Equipment: view only
+            Route::resource('equipment', StaffEquipmentController::class)->names('equipment')->only(['index', 'show']);
+            
+            // Attendance: view and mark attendance
             Route::get('attendance', [StaffAttendanceController::class, 'index'])->name('attendance.index');
             Route::post('attendance/check-in', [StaffAttendanceController::class, 'checkIn'])->name('attendance.checkin');
             Route::post('attendance/check-out/{id}', [StaffAttendanceController::class, 'checkOut'])->name('attendance.checkout');

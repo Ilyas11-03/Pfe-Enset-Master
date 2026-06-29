@@ -113,7 +113,6 @@
 
             <div class="col-12 d-flex justify-content-between align-items-center">
                 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Equipment</span></h4>
-                <a href="{{ route('staff.equipment.create') }}" class="btn btn-primary">Add Equipment</a>
                 @if (session('success'))
                     <div class="bs-toast toast toast-placement-ex m-2 fade bg-success bottom-0 end-0 show" role="alert"
                         aria-live="assertive" aria-atomic="true" id="messageToast">
@@ -194,21 +193,6 @@
                                         </td>
                                         <td>
                                             <div class="d-inline-block text-nowrap">
-                                                <!-- Edit Button -->
-                                                <a href="{{ route('staff.equipment.edit', encrypt($item->id)) }}"
-                                                    class="btn btn-sm btn-icon"><i class="bx bx-edit-alt me-1"></i></a>
-
-                                                <!-- Delete Button -->
-                                                <form action="{{ route('staff.equipment.destroy', encrypt($item->id)) }}"
-                                                    method="POST" class="d-inline" id="deleteform_{{ $item->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-sm btn-icon"
-                                                        onclick="if (confirm('Delete?')) { document.getElementById('deleteform_{{ $item->id }}').submit(); }">
-                                                        <i class="bx bx-trash me-1"></i>
-                                                    </button>
-                                                </form>
-
                                                 <!-- View Details Dropdown -->
                                                 <div class="dropdown d-inline">
                                                     <button type="button"

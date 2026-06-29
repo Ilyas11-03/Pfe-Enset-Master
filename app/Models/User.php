@@ -33,6 +33,16 @@ class User extends Authenticatable
         'updated_by',
         'last_login',
     ];
+    
+    public function hasRole($roles): bool
+{
+    if (!auth()->check()) return false;
+    $role = $this->role ?? null;
+    if (is_array($roles)) {
+        return in_array($role, $roles);
+    }
+    return $role === $roles;
+}
     public function gym()
     {
         return $this->belongsTo(Gym::class);

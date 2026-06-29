@@ -11,11 +11,14 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'payment_method',
+        'payment_date',
         'member_id',
         'membership_id',
         'sport_id',
         'start_date',
         'end_date',
+        'amount',
         'total_amount',
         'amount_paid',
         'due_amount',

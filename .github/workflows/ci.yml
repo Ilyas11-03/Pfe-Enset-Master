@@ -1,0 +1,109 @@
+# name: Laravel CI
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+
+# jobs:
+#   ci:
+#     runs-on: ubuntu-latest
+
+#     services:
+#       mysql:
+#         image: mysql:8.0
+#         env:
+#           MYSQL_ROOT_PASSWORD: root
+#           MYSQL_DATABASE: laravel
+#         ports:
+#           - 3306:3306
+#         options: >-
+#           --health-cmd="mysqladmin ping --silent"
+#           --health-interval=10s
+#           --health-timeout=5s
+#           --health-retries=3
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup PHP
+#         uses: shivammathur/setup-php@v3
+#         with:
+#           php-version: '8.3'
+#           extensions: mbstring, bcmath, xml, ctype, json, tokenizer, fileinfo, openssl
+#           coverage: none
+
+#       - name: Validate Composer cache
+#         uses: actions/cache@v4
+#         with:
+#           path: ~/.composer/cache
+#           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-composer-
+
+#       - name: Install Composer dependencies
+#         run: composer install --no-progress --prefer-dist --optimize-autoloader --no-scripts
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#           cache: 'npm'
+
+#       - name: Install npm dependencies
+#         run: npm install
+
+#       - name: Prepare environment
+#         run: |
+#           cat > .env <<'EOT'
+#           APP_NAME=Gym
+#           APP_ENV=testing
+#           APP_KEY=
+#           APP_DEBUG=true
+#           APP_URL=http://localhost
+
+#           DB_CONNECTION=mysql
+#           DB_HOST=127.0.0.1
+#           DB_PORT=3306
+#           DB_DATABASE=laravel
+#           DB_USERNAME=root
+#           DB_PASSWORD=root
+
+#           BROADCAST_CONNECTION=log
+#           CACHE_DRIVER=file
+#           QUEUE_CONNECTION=sync
+#           SESSION_DRIVER=file
+#           SESSION_LIFETIME=120
+
+#           MAIL_MAILER=smtp
+#           MAIL_HOST=localhost
+#           MAIL_PORT=1025
+#           MAIL_USERNAME=null
+#           MAIL_PASSWORD=null
+#           MAIL_ENCRYPTION=null
+#           MAIL_FROM_ADDRESS=null
+#           MAIL_FROM_NAME=null
+
+#           FILESYSTEM_DRIVER=local
+#           EOT
+
+#       - name: Wait for MySQL
+#         run: |
+#           for i in {1..30}; do
+#             mysql -h127.0.0.1 -uroot -proot -e 'select 1' && break
+#             sleep 2
+#           done
+
+#       - name: Generate app key
+#         run: php artisan key:generate --ansi
+
+#       - name: Run database migrations
+#         run: php artisan migrate --force
+
+#       - name: Run tests
+#         run: php artisan test --verbose
+
+#       - name: Build frontend assets
+#         run: npm run build

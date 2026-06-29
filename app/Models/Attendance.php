@@ -28,7 +28,7 @@ class Attendance extends Model
     {
         return $this->belongsTo(Gym::class);
     }
-
+    
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');

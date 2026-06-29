@@ -61,8 +61,6 @@
                                     </li>
                                 </ul>
                                 <div class="d-flex justify-content-center pt-3">
-                                    <a href="{{ route('staff.members.edit', encrypt($member->id)) }}"
-                                        class="btn btn-primary me-3">Edit</a>
                                     <a href="{{ route('staff.members.index') }}" class="btn btn-secondary">Back</a>
                                 </div>
                             </div>

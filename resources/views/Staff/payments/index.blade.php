@@ -212,18 +212,6 @@
                                                 <a href="{{ route('staff.payments.edit', encrypt($payment->id)) }}"
                                                     class="btn btn-sm btn-icon"><i class="bx bx-edit-alt me-1"></i></a>
 
-                                                <!-- Delete Button -->
-                                                <form
-                                                    action="{{ route('staff.payments.destroy', encrypt($payment->id)) }}"
-                                                    method="POST" class="d-inline" id="deleteform_{{ $payment->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-sm btn-icon"
-                                                        onclick="if (confirm('Delete?')) { document.getElementById('deleteform_{{ $payment->id }}').submit(); }">
-                                                        <i class="bx bx-trash me-1"></i>
-                                                    </button>
-                                                </form>
-
                                                 <!-- View Details Dropdown -->
                                                 <div class="dropdown d-inline">
                                                     <button type="button"

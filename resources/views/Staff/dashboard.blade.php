@@ -189,19 +189,8 @@
                                     <td>
                                         <div class="d-inline-block text-nowrap">
                                             <!-- Edit Button -->
-                                            <a href="{{ route('gym_admin.payments.edit', encrypt($payment->id)) }}"
+                                            <a href="{{ route('staff.payments.edit', encrypt($payment->id)) }}"
                                                 class="btn btn-sm btn-icon"><i class="bx bx-edit-alt me-1"></i></a>
-
-                                            <!-- Delete Button -->
-                                            <form action="{{ route('gym_admin.payments.destroy', encrypt($payment->id)) }}"
-                                                method="POST" class="d-inline" id="deleteform_{{ $payment->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-icon"
-                                                    onclick="if (confirm('Delete?')) { document.getElementById('deleteform_{{ $payment->id }}').submit(); }">
-                                                    <i class="bx bx-trash me-1"></i>
-                                                </button>
-                                            </form>
 
                                             <!-- View Details Dropdown -->
                                             <div class="dropdown d-inline">
@@ -212,7 +201,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item"
-                                                        href="{{ route('gym_admin.payments.show', encrypt($payment->id)) }}">
+                                                        href="{{ route('staff.payments.show', encrypt($payment->id)) }}">
                                                         <i class='bx bx-detail'></i> Details
                                                     </a>
                                                 </div>
