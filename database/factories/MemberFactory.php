@@ -14,14 +14,16 @@ class MemberFactory extends Factory
     {
         return [
             'gym_id' => Gym::factory(),
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
+            'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
-            'date_of_birth' => $this->faker->date(),
-            'gender' => $this->faker->randomElement(['male', 'female']),
             'address' => $this->faker->address(),
+            'gender' => $this->faker->randomElement(['male', 'female', 'other']),
             'status' => 'active',
+            'join_date' => $this->faker->date(),
+            'profile_image' => null,
+            'created_by' => null,
+            'updated_by' => null,
         ];
     }
 }
