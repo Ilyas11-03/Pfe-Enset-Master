@@ -74,9 +74,4 @@ class Member extends Model
     {
         return $this->isExpired();
     }
-
-    public function getCurrentPlanAttribute()
-    {
-        return $this->hasOne(GymPlan::class)->latest()->first();
-    }
 }

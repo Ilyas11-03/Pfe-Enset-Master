@@ -160,28 +160,37 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
+                                                @php $member = $attendance->member; @endphp
                                                 <div class="rounded-circle overflow-hidden"
                                                     style="width: 60px; height: 60px; flex-shrink: 0;">
-                                                    @if ($attendance->member->profile_image && Storage::exists('public/' . $attendance->member->profile_image))
-                                                        <img src="{{ asset(Storage::url($attendance->member->profile_image)) }}"
+                                                    @if ($member && $member->profile_image && Storage::exists('public/' . $member->profile_image))
+                                                        <img src="{{ asset(Storage::url($member->profile_image)) }}"
                                                             alt="Profile Image" width="60" class="rounded-circle">
+                                                    @elseif ($member)
+                                                        <span
+                                                            class="d-flex justify-content-center align-items-center fw-bold text-uppercase bg-secondary text-white rounded-circle"
+                                                            style="width: 60px; height: 60px;">{{ substr($member->name, 0, 2) }}</span>
                                                     @else
                                                         <span
                                                             class="d-flex justify-content-center align-items-center fw-bold text-uppercase bg-secondary text-white rounded-circle"
-                                                            style="width: 60px; height: 60px;">{{ substr($attendance->member->name, 0, 2) }}</span>
+                                                            style="width: 60px; height: 60px;">N/A</span>
                                                     @endif
                                                 </div>
                                                 <div class="ms-2">
-                                                    <a href="{{ route('gym_admin.members.show', encrypt($attendance->member->id)) }}"
-                                                        class="text-body text-truncate"><strong>{{ $attendance->member->name }}</strong></a>
+                                                    @if ($member)
+                                                        <a href="{{ route('gym_admin.members.show', encrypt($member->id)) }}"
+                                                            class="text-body text-truncate"><strong>{{ $member->name }}</strong></a>
+                                                    @else
+                                                        <strong>Deleted Member</strong>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>
                                         <td>{{ $attendance->check_in }}</td>
                                         <td>{{ $attendance->check_out }}</td>
                                         <td>{{ $attendance->duration }}</td>
-                                        <td>{{ $attendance->createdBy->name }}</td>
-                                        <td>{{ $attendance->updatedBy->name ?? 'N/A' }}</td>
+                                        <td>{{ optional($attendance->createdBy)->name ?? 'N/A' }}</td>
+                                        <td>{{ optional($attendance->updatedBy)->name ?? 'N/A' }}</td>
                                         <td>
                                             @if ($attendance->is_checked_in)
                                                 <form
