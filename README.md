@@ -177,3 +177,6 @@ Open the app at `http://127.0.0.1:8000`.
 ## Project goals
 
 This repo is designed to support a gym management workflow spanning system administration, gym operations, member services, and staff-led daily tasks. The architecture follows Laravel conventions with modular controllers per user role and Eloquent models for a clean domain layer.
+
+
+![CI/CD Status](https://github.com/Ilyas11-03/Pfe-Enset-Master/actions/workflows/tests.yml/badge.svg)
